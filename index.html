@@ -1,195 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>PGN Web</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f9;
-        margin: 0;
-        padding: 0;
-    }
-    header {
-        background-color: #0055a5;
-        color: white;
-        text-align: center;
-        padding: 20px;
-    }
-    main {
-        padding: 20px;
-        max-width: 900px;
-        margin: auto;
-    }
-    .login-section, .menu-section {
-        background-color: white;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-    }
-    label {
-        display: block;
-        margin-top: 10px;
-    }
-    input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-    }
-    button {
-        margin-top: 15px;
-        padding: 10px 15px;
-        background-color: #0055a5;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #003d7a;
-    }
-    .welcome {
-        background-color: #0073e6;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        margin-bottom: 20px;
-        display: none;
-    }
-    details {
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    summary {
-        font-weight: bold;
-        cursor: pointer;
-    }
-    ul {
-        margin: 5px 0 0 20px;
-    }
-    li {
-        margin-bottom: 5px;
-    }
-</style>
+  <meta charset="UTF-8">
+  <title>PGN Bot - Sistema de Casos</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f0f4f8; margin: 0; padding: 0; }
+    header { background-color: #1f2a44; color: white; padding: 20px; text-align: center; }
+    main { padding: 20px; max-width: 900px; margin: auto; }
+    h2 { color: #1f2a44; }
+    select, input, button { padding: 8px; margin: 5px 0; width: 100%; }
+    .category { background-color: #e2e8f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    .case-list { background-color: #ffffff; padding: 10px; border-radius: 5px; margin-top: 10px; }
+    .welcome { background-color: #1f2a44; color: white; padding: 15px; border-radius: 5px; text-align: center; margin-bottom: 20px; }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Procuraduría General de la Nación - Sistema de Casos</h1>
+  </header>
+  <main>
+    <div id="welcome" class="welcome">
+      <h2>Bienvenido al sistema PGN</h2>
+      <p>Ingresa tu correo y usuario de Discord para continuar</p>
+      <input type="email" id="email" placeholder="Correo electrónico">
+      <input type="text" id="discordUser" placeholder="Usuario de Discord">
+      <button onclick="login()">Iniciar sesión</button>
+    </div>
 
-<header>
-    <h1>Procuraduría General de la Nación - Web</h1>
-</header>
+    <div id="system" style="display:none;">
+      <h2>Menú de Opciones</h2>
 
-<main>
+      <div class="category">
+        <strong>Categoría - Información</strong>
+        <select onchange="showOption('info', this.value)">
+          <option value="">Selecciona</option>
+          <option>Qué somos?</option>
+          <option>Función</option>
+          <option>Rango</option>
+          <option>Código penal</option>
+          <option>Constitución</option>
+        </select>
+        <div id="info" class="case-list"></div>
+      </div>
 
-<div class="login-section">
-    <h2>Login</h2>
-    <label for="discordUser">Usuario de Discord:</label>
-    <input type="text" id="discordUser" placeholder="ejemplo#1234">
-    <label for="email">Correo electrónico:</label>
-    <input type="email" id="email" placeholder="usuario@correo.com">
-    <button onclick="login()">Ingresar</button>
-</div>
+      <div class="category">
+        <strong>Categoría - Procuraduría General de la Nación</strong>
+        <select onchange="showOption('pgn', this.value)">
+          <option value="">Selecciona</option>
+          <option>Denuncia</option>
+          <option>Asistencia fiscal</option>
+          <option>Queja contra funcionario</option>
+          <option>Seguimiento de Caso</option>
+        </select>
+        <div id="pgn" class="case-list"></div>
+      </div>
 
-<div class="welcome" id="welcomeMessage"></div>
+      <div class="category">
+        <strong>Categoría - Procuraduría de la Administración</strong>
+        <select onchange="showOption('admin', this.value)">
+          <option value="">Selecciona</option>
+          <option>Denuncia administrativa</option>
+          <option>Apelar sanción administrativa</option>
+          <option>Asesoría legal</option>
+          <option>Asistencia administrativa</option>
+          <option>Denuncia inconstitucional</option>
+        </select>
+        <div id="admin" class="case-list"></div>
+      </div>
 
-<div class="menu-section" id="menus" style="display:none;">
+      <h2>Casos creados</h2>
+      <div id="cases" class="case-list"></div>
+    </div>
+  </main>
 
-    <details>
-        <summary>Categoría - Información</summary>
-        <ul>
-            <li>Que somos?</li>
-            <li>Función</li>
-            <li>Rango</li>
-            <li>Código penal</li>
-            <li>Constitución</li>
-        </ul>
-    </details>
+  <script>
+    let user = null;
+    let caseNumber = parseInt(localStorage.getItem('caseNumber')) || 1;
 
-    <details>
-        <summary>Categoría - Procuraduría General de la Nación</summary>
-        <ul>
-            <li>Denuncia</li>
-            <li>Asistencia fiscal</li>
-            <li>Queja contra funcionario</li>
-            <li>Seguimiento de Caso</li>
-        </ul>
-    </details>
+    function login() {
+      const email = document.getElementById('email').value;
+      const discordUser = document.getElementById('discordUser').value;
+      if(!email || !discordUser) return alert("Debes ingresar correo y usuario de Discord");
 
-    <details>
-        <summary>Categoría - Procuraduría de la Administración</summary>
-        <ul>
-            <li>Denuncia administrativa</li>
-            <li>Apelar sanción administrativa</li>
-            <li>Asesoría legal</li>
-            <li>Asistencia administrativa</li>
-            <li>Denuncia inconstitucional</li>
-        </ul>
-    </details>
+      user = { email, discordUser };
+      localStorage.setItem('user', JSON.stringify(user));
 
-    <details>
-        <summary>Categoría - Personal (solo roles Ministerio Público)</summary>
-        <ul>
-            <li>Anuncios</li>
-            <li>Ascensos</li>
-            <li>Descensos</li>
-            <li>Sanciones</li>
-            <li>Canal para chatear</li>
-        </ul>
-    </details>
+      document.getElementById('welcome').style.display = 'none';
+      document.getElementById('system').style.display = 'block';
 
-    <details>
-        <summary>Categoría - Archivado (solo personal)</summary>
-        <ul>
-            <li>Casos</li>
-            <li>Investigaciones</li>
-            <li>Boletín</li>
-            <li>Otras opciones</li>
-        </ul>
-    </details>
-
-    <details>
-        <summary>Categoría - Administración (solo roles admin web)</summary>
-        <ul>
-            <li>Roles</li>
-            <li>Administrar opciones</li>
-            <li>Subir logo de la PGN</li>
-        </ul>
-    </details>
-
-</div>
-
-</main>
-
-<script>
-function login() {
-    const user = document.getElementById("discordUser").value;
-    const email = document.getElementById("email").value;
-
-    if(!user || !email) {
-        alert("Por favor completa ambos campos.");
-        return;
+      alert(`Bienvenido ${discordUser}!`);
     }
 
-    // Guardar en localStorage
-    localStorage.setItem("discordUser", user);
-    localStorage.setItem("email", email);
+    function showOption(category, value) {
+      if(!value) return;
+      const content = `Usuario: ${user.discordUser}<br>
+                       Categoría: ${category}<br>
+                       Opción seleccionada: ${value}<br>
+                       Número de caso: ${caseNumber}`;
+      const caseDiv = document.getElementById(category);
+      caseDiv.innerHTML = content;
 
-    // Mostrar mensaje de bienvenida
-    const welcomeDiv = document.getElementById("welcomeMessage");
-    welcomeDiv.innerHTML = `Bienvenido, <b>${user}</b> a la PGN Web.`;
-    welcomeDiv.style.display = "block";
+      // Guardar caso
+      const cases = JSON.parse(localStorage.getItem('cases') || '[]');
+      cases.push({ number: caseNumber, user: user.discordUser, category, option: value });
+      localStorage.setItem('cases', JSON.stringify(cases));
 
-    // Mostrar menús
-    document.getElementById("menus").style.display = "block";
+      renderCases();
+      caseNumber++;
+      localStorage.setItem('caseNumber', caseNumber);
+    }
 
-    // Ocultar login
-    document.querySelector(".login-section").style.display = "none";
-}
-</script>
+    function renderCases() {
+      const casesDiv = document.getElementById('cases');
+      const cases = JSON.parse(localStorage.getItem('cases') || '[]');
+      casesDiv.innerHTML = cases.map(c => 
+        `#${c.number} - ${c.user} - ${c.category} - ${c.option}`
+      ).join('<br>');
+    }
 
+    // Cargar casos al iniciar
+    renderCases();
+  </script>
 </body>
 </html>
