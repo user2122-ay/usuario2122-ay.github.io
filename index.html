@@ -1,71 +1,115 @@
-index.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PGN Bot - Sistema de Tickets</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGN - Sistema de Atención</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f6f8;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
             text-align: center;
-            color: #1f2a44;
         }
         header {
-            background-color: #2c3e50;
+            background-color: #1f2a44;
             color: white;
             padding: 20px 0;
         }
-        h1 {
-            margin: 0;
+        header img {
+            height: 80px;
         }
-        main {
-            margin: 40px auto;
-            max-width: 600px;
+        h1 {
+            margin: 10px 0;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 900px;
             background-color: white;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-        .options {
-            text-align: left;
-            margin-top: 20px;
+        .section {
+            margin-bottom: 30px;
         }
-        .option {
-            background-color: #e7ecf0;
-            margin: 10px 0;
-            padding: 10px 15px;
+        button {
+            background-color: #1f2a44;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 10px;
             border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
         }
-        footer {
-            margin-top: 40px;
-            font-size: 0.9em;
-            color: #555;
+        button:hover {
+            background-color: #344767;
+        }
+        .info {
+            text-align: left;
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>⚖️ PGN Bot</h1>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Coat_of_arms_of_Panama.svg/1200px-Coat_of_arms_of_Panama.svg.png" alt="Logo PGN">
+        <h1>Procuraduría General de la Nación - Sistema de Atención</h1>
     </header>
 
-    <main>
-        <h2>Bienvenido al Sistema de Tickets de la PGN</h2>
-        <p>Seleccione el tipo de trámite que desea realizar con nuestro bot en Discord:</p>
-
-        <div class="options">
-            <div class="option">📄 Denuncia administrativa</div>
-            <div class="option">📜 Apelar sanción administrativa</div>
-            <div class="option">⚖️ Asesoría legal</div>
-            <div class="option">🏛️ Asistencia administrativa</div>
-            <div class="option">❗ Denuncia inconstitucional</div>
+    <div class="container">
+        <div class="section">
+            <h2>Procuraduría Administrativa</h2>
+            <button onclick="abrirTicket('denuncia_admin')">📄 Denuncia administrativa</button>
+            <button onclick="abrirTicket('apelacion_sancion')">⚖️ Apelar sanción administrativa</button>
+            <button onclick="abrirTicket('asesoria_legal')">📝 Asesoría legal</button>
+            <button onclick="abrirTicket('asistencia_admin')">📌 Asistencia administrativa</button>
         </div>
-    </main>
 
-    <footer>
-        Página informativa del PGN Bot. Hecho por tu equipo de desarrollo.
-    </footer>
+        <div class="section">
+            <h2>Procuraduría General de la Nación</h2>
+            <button onclick="abrirTicket('denuncia_inconstitucional')">🛡️ Denuncia inconstitucional</button>
+        </div>
+
+        <div class="section">
+            <h2>Información Legal</h2>
+            <button onclick="mostrarInfo('constitucion')">📜 Constitución de Panamá</button>
+            <button onclick="mostrarInfo('codigo_penal')">⚖️ Código Penal</button>
+
+            <div id="infoBox" class="info" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        function abrirTicket(tipo) {
+            alert('Se ha abierto un ticket de tipo: ' + tipo + '\nEsto luego se puede conectar al bot de Discord.');
+            // Aquí luego se puede hacer un fetch a un webhook o API del bot
+        }
+
+        function mostrarInfo(tipo) {
+            const infoBox = document.getElementById('infoBox');
+            let contenido = '';
+
+            if(tipo === 'constitucion') {
+                contenido = `<h3>Constitución de Panamá</h3>
+                <p>La Constitución de la República de Panamá establece los derechos fundamentales, organización del Estado y normas para los ciudadanos.</p>
+                <p>(Aquí puedes agregar los artículos más importantes o un resumen interactivo)</p>`;
+            } else if(tipo === 'codigo_penal') {
+                contenido = `<h3>Código Penal</h3>
+                <p>El Código Penal regula las conductas delictivas, penas y procedimientos en Panamá.</p>
+                <p>(Aquí puedes agregar artículos destacados o resúmenes de delitos y sanciones)</p>`;
+            }
+
+            infoBox.innerHTML = contenido;
+            infoBox.style.display = 'block';
+            infoBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
