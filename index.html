@@ -2,114 +2,152 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>PGN - Sistema de Atención</title>
+    <title>PGN - Portal Oficial</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f0f4f8;
+            color: #1f2a44;
             margin: 0;
             padding: 0;
-            text-align: center;
         }
+
         header {
             background-color: #1f2a44;
             color: white;
-            padding: 20px 0;
+            padding: 20px;
+            text-align: center;
         }
-        header img {
-            height: 80px;
-        }
+
         h1 {
-            margin: 10px 0;
+            margin: 0;
         }
-        .container {
-            margin: 20px auto;
-            max-width: 900px;
+
+        main {
+            padding: 20px;
+        }
+
+        .login, .roles, .denuncias {
             background-color: white;
-            padding: 30px;
+            padding: 20px;
+            margin-bottom: 20px;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
         }
-        .section {
-            margin-bottom: 30px;
+
+        input, select, button {
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
+
         button {
             background-color: #1f2a44;
             color: white;
             border: none;
-            padding: 15px 25px;
-            margin: 10px;
-            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
+
         button:hover {
-            background-color: #344767;
+            background-color: #34495e;
         }
-        .info {
-            text-align: left;
-            background-color: #f7f7f7;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 10px;
-            max-height: 300px;
-            overflow-y: auto;
+
+        .linea-opciones {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .linea-opciones div {
+            flex: 1;
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Coat_of_arms_of_Panama.svg/1200px-Coat_of_arms_of_Panama.svg.png" alt="Logo PGN">
-        <h1>Procuraduría General de la Nación - Sistema de Atención</h1>
-    </header>
 
-    <div class="container">
-        <div class="section">
-            <h2>Procuraduría Administrativa</h2>
-            <button onclick="abrirTicket('denuncia_admin')">📄 Denuncia administrativa</button>
-            <button onclick="abrirTicket('apelacion_sancion')">⚖️ Apelar sanción administrativa</button>
-            <button onclick="abrirTicket('asesoria_legal')">📝 Asesoría legal</button>
-            <button onclick="abrirTicket('asistencia_admin')">📌 Asistencia administrativa</button>
-        </div>
+<header>
+    <h1>⚖️ Portal PGN</h1>
+    <p>Procuraduría General de la Nación - Panamá</p>
+</header>
 
-        <div class="section">
-            <h2>Procuraduría General de la Nación</h2>
-            <button onclick="abrirTicket('denuncia_inconstitucional')">🛡️ Denuncia inconstitucional</button>
-        </div>
+<main>
 
-        <div class="section">
-            <h2>Información Legal</h2>
-            <button onclick="mostrarInfo('constitucion')">📜 Constitución de Panamá</button>
-            <button onclick="mostrarInfo('codigo_penal')">⚖️ Código Penal</button>
+    <!-- Registro / Inicio de sesión -->
+    <div class="login">
+        <h2>Iniciar sesión / Registrarse</h2>
+        <input type="email" id="email" placeholder="Correo electrónico">
+        <input type="text" id="discordUser" placeholder="Usuario de Discord">
+        <button onclick="registrarUsuario()">Registrar / Iniciar sesión</button>
+        <p id="mensajeBienvenida" style="margin-top:10px; color:#1f2a44;"></p>
+    </div>
 
-            <div id="infoBox" class="info" style="display:none;"></div>
+    <!-- Roles administrativos -->
+    <div class="roles">
+        <h2>Roles</h2>
+        <select id="rolSeleccion">
+            <option value="fiscal">Fiscal</option>
+            <option value="procurador">Procurador</option>
+            <option value="keycard">Key Card (Administración web)</option>
+        </select>
+        <button onclick="asignarRol()">Asignar Rol</button>
+        <p id="mensajeRol" style="margin-top:10px;"></p>
+    </div>
+
+    <!-- Secciones de denuncias -->
+    <div class="denuncias">
+        <h2>Denuncias</h2>
+        <div class="linea-opciones">
+            <div>
+                <h3>Administrativa</h3>
+                <button>Denuncia administrativa</button>
+                <button>Apelar sanción administrativa</button>
+            </div>
+            <div>
+                <h3>Legal</h3>
+                <button>Asesoría legal</button>
+                <button>Asistencia administrativa</button>
+            </div>
+            <div>
+                <h3>Constitucional</h3>
+                <button>Denuncia inconstitucional</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        function abrirTicket(tipo) {
-            alert('Se ha abierto un ticket de tipo: ' + tipo + '\nEsto luego se puede conectar al bot de Discord.');
-            // Aquí luego se puede hacer un fetch a un webhook o API del bot
+</main>
+
+<script>
+    function registrarUsuario() {
+        const email = document.getElementById("email").value;
+        const discord = document.getElementById("discordUser").value;
+
+        if(!email || !discord) {
+            alert("Por favor ingrese su correo y usuario de Discord");
+            return;
         }
 
-        function mostrarInfo(tipo) {
-            const infoBox = document.getElementById('infoBox');
-            let contenido = '';
+        // Mensaje de bienvenida
+        document.getElementById("mensajeBienvenida").innerText = `Bienvenido ${discord}!`;
+        document.getElementById("mensajeBienvenida").style.backgroundColor = "#3498db";
+        document.getElementById("mensajeBienvenida").style.color = "white";
+        document.getElementById("mensajeBienvenida").style.padding = "10px";
+        document.getElementById("mensajeBienvenida").style.borderRadius = "5px";
 
-            if(tipo === 'constitucion') {
-                contenido = `<h3>Constitución de Panamá</h3>
-                <p>La Constitución de la República de Panamá establece los derechos fundamentales, organización del Estado y normas para los ciudadanos.</p>
-                <p>(Aquí puedes agregar los artículos más importantes o un resumen interactivo)</p>`;
-            } else if(tipo === 'codigo_penal') {
-                contenido = `<h3>Código Penal</h3>
-                <p>El Código Penal regula las conductas delictivas, penas y procedimientos en Panamá.</p>
-                <p>(Aquí puedes agregar artículos destacados o resúmenes de delitos y sanciones)</p>`;
-            }
+        // Aquí se podría enviar información al bot con un backend real
+        console.log("Usuario registrado:", {email, discord});
+    }
 
-            infoBox.innerHTML = contenido;
-            infoBox.style.display = 'block';
-            infoBox.scrollIntoView({ behavior: 'smooth' });
-        }
-    </script>
+    function asignarRol() {
+        const rol = document.getElementById("rolSeleccion").value;
+        document.getElementById("mensajeRol").innerText = `Rol asignado: ${rol}`;
+    }
+</script>
+
 </body>
 </html>
