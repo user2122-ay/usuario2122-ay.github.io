@@ -2,216 +2,193 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>PGN - Portal Oficial</title>
+<title>PGN Web</title>
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f0f4f8;
+        background-color: #f4f4f9;
         margin: 0;
         padding: 0;
     }
     header {
-        background-color: #1f2a44;
+        background-color: #0055a5;
         color: white;
         text-align: center;
         padding: 20px;
     }
     main {
         padding: 20px;
+        max-width: 900px;
+        margin: auto;
     }
-    .bienvenida {
-        display: none;
-        background-color: #3498db;
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .login {
+    .login-section, .menu-section {
         background-color: white;
         padding: 20px;
-        border-radius: 10px;
         margin-bottom: 20px;
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
     }
-    input, select, button {
-        padding: 10px;
+    label {
+        display: block;
         margin-top: 10px;
+    }
+    input {
         width: 100%;
-        border-radius: 5px;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 4px;
         border: 1px solid #ccc;
     }
     button {
-        background-color: #1f2a44;
+        margin-top: 15px;
+        padding: 10px 15px;
+        background-color: #0055a5;
         color: white;
         border: none;
+        border-radius: 5px;
         cursor: pointer;
     }
     button:hover {
-        background-color: #34495e;
+        background-color: #003d7a;
     }
-    .categoria {
-        background-color: white;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-    }
-    .categoria-header {
-        padding: 15px;
-        cursor: pointer;
-        font-weight: bold;
-        background-color: #2c3e50;
+    .welcome {
+        background-color: #0073e6;
         color: white;
-        border-radius: 10px 10px 0 0;
-    }
-    .categoria-body {
-        display: none;
         padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: none;
     }
-    .categoria-body button {
-        width: auto;
-        margin: 5px 5px 5px 0;
+    details {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    summary {
+        font-weight: bold;
+        cursor: pointer;
+    }
+    ul {
+        margin: 5px 0 0 20px;
+    }
+    li {
+        margin-bottom: 5px;
     }
 </style>
 </head>
 <body>
 
 <header>
-    <h1>⚖️ Portal PGN</h1>
-    <p>Procuraduría General de la Nación - Panamá</p>
+    <h1>Procuraduría General de la Nación - Web</h1>
 </header>
 
 <main>
 
-    <!-- Login -->
-    <div class="login">
-        <h2>Iniciar sesión / Registrarse</h2>
-        <input type="email" id="email" placeholder="Correo electrónico">
-        <input type="text" id="discordUser" placeholder="Usuario de Discord">
-        <select id="rolSeleccion">
-            <option value="ciudadano">Ciudadano</option>
-            <option value="fiscal">Fiscal</option>
-            <option value="procurador">Procurador</option>
-            <option value="keycard">Administración Web</option>
-        </select>
-        <button onclick="registrarUsuario()">Registrar / Iniciar sesión</button>
-    </div>
+<div class="login-section">
+    <h2>Login</h2>
+    <label for="discordUser">Usuario de Discord:</label>
+    <input type="text" id="discordUser" placeholder="ejemplo#1234">
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" placeholder="usuario@correo.com">
+    <button onclick="login()">Ingresar</button>
+</div>
 
-    <!-- Mensaje de bienvenida -->
-    <div class="bienvenida" id="bienvenida"></div>
+<div class="welcome" id="welcomeMessage"></div>
 
-    <!-- Categorías -->
-    <div id="categorias">
+<div class="menu-section" id="menus" style="display:none;">
 
-        <!-- Información -->
-        <div class="categoria">
-            <div class="categoria-header">Categoría - Información</div>
-            <div class="categoria-body">
-                <button>¿Qué somos?</button>
-                <button>Función</button>
-                <button>Rango</button>
-                <button>Código Penal</button>
-                <button>Constitución</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Información</summary>
+        <ul>
+            <li>Que somos?</li>
+            <li>Función</li>
+            <li>Rango</li>
+            <li>Código penal</li>
+            <li>Constitución</li>
+        </ul>
+    </details>
 
-        <!-- Procuraduría General de la Nación -->
-        <div class="categoria" data-role="ciudadano,fiscal,procurador,keycard">
-            <div class="categoria-header">Categoría - Procuraduría General de la Nación</div>
-            <div class="categoria-body">
-                <button>Denuncia</button>
-                <button>Asistencia Fiscal</button>
-                <button>Queja contra funcionario</button>
-                <button>Seguimiento de Caso</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Procuraduría General de la Nación</summary>
+        <ul>
+            <li>Denuncia</li>
+            <li>Asistencia fiscal</li>
+            <li>Queja contra funcionario</li>
+            <li>Seguimiento de Caso</li>
+        </ul>
+    </details>
 
-        <!-- Procuraduría de la Administración -->
-        <div class="categoria" data-role="ciudadano,fiscal,procurador,keycard">
-            <div class="categoria-header">Categoría - Procuraduría de la Administración</div>
-            <div class="categoria-body">
-                <button>Denuncia administrativa</button>
-                <button>Apelar sanción administrativa</button>
-                <button>Asesoría legal</button>
-                <button>Asistencia administrativa</button>
-                <button>Denuncia inconstitucional</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Procuraduría de la Administración</summary>
+        <ul>
+            <li>Denuncia administrativa</li>
+            <li>Apelar sanción administrativa</li>
+            <li>Asesoría legal</li>
+            <li>Asistencia administrativa</li>
+            <li>Denuncia inconstitucional</li>
+        </ul>
+    </details>
 
-        <!-- Personal -->
-        <div class="categoria" data-role="fiscal,procurador,keycard">
-            <div class="categoria-header">Categoría - Personal (solo Ministerio Público)</div>
-            <div class="categoria-body">
-                <button>Anuncios</button>
-                <button>Ascensos</button>
-                <button>Descensos</button>
-                <button>Sanciones</button>
-                <button>Canal de chat</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Personal (solo roles Ministerio Público)</summary>
+        <ul>
+            <li>Anuncios</li>
+            <li>Ascensos</li>
+            <li>Descensos</li>
+            <li>Sanciones</li>
+            <li>Canal para chatear</li>
+        </ul>
+    </details>
 
-        <!-- Archivado -->
-        <div class="categoria" data-role="fiscal,procurador,keycard">
-            <div class="categoria-header">Categoría - Archivado</div>
-            <div class="categoria-body">
-                <button>Casos</button>
-                <button>Investigaciones</button>
-                <button>Boletín</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Archivado (solo personal)</summary>
+        <ul>
+            <li>Casos</li>
+            <li>Investigaciones</li>
+            <li>Boletín</li>
+            <li>Otras opciones</li>
+        </ul>
+    </details>
 
-        <!-- Administración -->
-        <div class="categoria" data-role="keycard">
-            <div class="categoria-header">Categoría - Administración</div>
-            <div class="categoria-body">
-                <button>Roles</button>
-                <button>Administrar opciones</button>
-                <button>Subir logo PGN</button>
-            </div>
-        </div>
+    <details>
+        <summary>Categoría - Administración (solo roles admin web)</summary>
+        <ul>
+            <li>Roles</li>
+            <li>Administrar opciones</li>
+            <li>Subir logo de la PGN</li>
+        </ul>
+    </details>
 
-    </div>
+</div>
 
 </main>
 
 <script>
-let rolUsuario = "";
-
-function registrarUsuario() {
+function login() {
+    const user = document.getElementById("discordUser").value;
     const email = document.getElementById("email").value;
-    const discord = document.getElementById("discordUser").value;
-    rolUsuario = document.getElementById("rolSeleccion").value;
 
-    if(!email || !discord) {
-        alert("Por favor ingrese correo y usuario de Discord");
+    if(!user || !email) {
+        alert("Por favor completa ambos campos.");
         return;
     }
 
-    // Mostrar bienvenida
-    const bienvenida = document.getElementById("bienvenida");
-    bienvenida.innerText = `Bienvenido ${discord}!`;
-    bienvenida.style.display = "block";
+    // Guardar en localStorage
+    localStorage.setItem("discordUser", user);
+    localStorage.setItem("email", email);
 
-    // Mostrar categorías según rol
-    const categorias = document.querySelectorAll(".categoria");
-    categorias.forEach(cat => {
-        const rolesPermitidos = cat.dataset.role ? cat.dataset.role.split(",") : ["ciudadano","fiscal","procurador","keycard"];
-        if(!rolesPermitidos.includes(rolUsuario)) {
-            cat.style.display = "none";
-        } else {
-            cat.style.display = "block";
-        }
-    });
+    // Mostrar mensaje de bienvenida
+    const welcomeDiv = document.getElementById("welcomeMessage");
+    welcomeDiv.innerHTML = `Bienvenido, <b>${user}</b> a la PGN Web.`;
+    welcomeDiv.style.display = "block";
+
+    // Mostrar menús
+    document.getElementById("menus").style.display = "block";
+
+    // Ocultar login
+    document.querySelector(".login-section").style.display = "none";
 }
-
-// Accordion
-const headers = document.querySelectorAll(".categoria-header");
-headers.forEach(header => {
-    header.addEventListener("click", () => {
-        const body = header.nextElementSibling;
-        body.style.display = body.style.display === "block" ? "none" : "block";
-    });
-});
 </script>
 
 </body>
