@@ -1,68 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Procuraduría General de la Nación - Panamá</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>PGN - Iniciar Sesión</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="login-body">
 
-<header>
-    <div class="logo-area">
-        <h1>Procuraduría General de la Nación</h1>
-        <p>Ministerio Público - República de Panamá</p>
-    </div>
-</header>
+<div class="login-box">
+    <h2>Procuraduría General de la Nación</h2>
 
-<nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#mision">Misión</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#contacto">Contacto</a>
-</nav>
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña">
+    
+    <select id="rol">
+        <option value="">Seleccione Rol</option>
+        <option value="Procurador">Procurador</option>
+        <option value="Subprocurador">Subprocurador</option>
+        <option value="Fiscal">Fiscal</option>
+    </select>
 
-<section id="inicio" class="hero">
-    <h2>Bienvenido al Portal Oficial</h2>
-    <p>Garantizando justicia, legalidad y transparencia para la Nación.</p>
-</section>
+    <button onclick="iniciarSesion()">Ingresar</button>
+</div>
 
-<section id="mision">
-    <h2>Misión Institucional</h2>
-    <p>
-        Investigar y perseguir los delitos, defender los intereses del Estado 
-        y garantizar el cumplimiento de la Constitución y la Ley.
-    </p>
-</section>
-
-<section id="servicios">
-    <h2>Servicios</h2>
-
-    <div class="card">
-        <h3>Denuncias</h3>
-        <p>Recepción de denuncias penales y administrativas.</p>
-    </div>
-
-    <div class="card">
-        <h3>Asistencia Legal</h3>
-        <p>Orientación jurídica a la ciudadanía.</p>
-    </div>
-
-    <div class="card">
-        <h3>Transparencia</h3>
-        <p>Acceso público a información institucional.</p>
-    </div>
-</section>
-
-<section id="contacto">
-    <h2>Contacto</h2>
-    <p>📍 Ciudad de Panamá</p>
-    <p>📞 Teléfono: (507) 000-0000</p>
-    <p>📧 correo@pgn.gob.pa</p>
-</section>
-
-<footer>
-    © 2026 Procuraduría General de la Nación - República de Panamá
-</footer>
-
+<script src="script.js"></script>
 </body>
 </html>
