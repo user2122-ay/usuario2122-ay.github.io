@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel PGN</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Panel Institucional PGN</h1>
+    <p id="infoUsuario"></p>
+</header>
+
+<nav>
+    <button onclick="mostrarSeccion('constitucion')">Constitución</button>
+    <button onclick="mostrarSeccion('codigo')">Código Penal</button>
+    <button onclick="mostrarSeccion('expedientes')">Expedientes</button>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+</nav>
+
+<section id="constitucion" class="seccion">
+    <h2>Constitución</h2>
+    <p>Aquí va el contenido constitucional...</p>
+</section>
+
+<section id="codigo" class="seccion" style="display:none;">
+    <h2>Código Penal</h2>
+    <p>Aquí va el contenido penal...</p>
+</section>
+
+<section id="expedientes" class="seccion" style="display:none;">
+    <h2>Expedientes</h2>
+
+    <div id="formExpediente">
+        <input type="text" id="nuevoExpediente" placeholder="Nombre del expediente">
+        <button onclick="agregarExpediente()">Añadir</button>
+    </div>
+
+    <ul id="listaExpedientes"></ul>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
